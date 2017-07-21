@@ -319,11 +319,62 @@ girl_names[total_as > 4]
 
 #---------------------------------------------------> Splitting strings
 
+date_ranges <- c("23.01.2017 - 29.01.2017", "30.01.2017 - 06.02.2017")
+
+# Split dates using " - "
+split_dates <- str_split(date_ranges, pattern = fixed(" - "))
+
+# Print split_dates
+split_dates
+
+# Split dates with n and simplify specified
+split_dates_n <- str_split(date_ranges, pattern = fixed(" - "), simplify = TRUE, n = 2)
+
+split_dates_n
+
+# Subset split_dates_n into start_dates and end_dates
+start_dates <- split_dates_n[,1]
+end_dates <- split_dates_n[,2]
+
+# Split start_dates into day, month and year pieces
+str_split(start_dates, pattern = fixed("."), simplify = TRUE, n = 3)
+
+# Split both_names into first_names and last_names
+both_names <- c("Box, George", "Cox, David")
+both_names_split <- str_split(both_names, pattern = fixed(", "), simplify = TRUE , n = 2)
+first_names <- both_names_split[,2]
+last_names <- both_names_split[,1]
+
+#---------------------------------------------------> Some simple text statistics
+
+lines <- c("The table was a large one, but the three were all crowded together at one corner of it:"                                  
+          ,"\"No room! No room!\" they cried out when they saw Alice coming."                                                         
+          ,"\"There’s plenty of room!\" said Alice indignantly, and she sat down in a large arm-chair at one end of the table.")
+
+# Split lines into words
+words <- str_split(lines, pattern = fixed(" "))
+
+# Number of words per line
+lapply(words, length)
+
+# Number of characters in each word
+word_lengths <- lapply(words, str_count)
+
+# Average word length per line
+lapply(word_lengths, mean)
+
+
+#--------------------------------------------------->Replacing matches in strings
 
 
 
-#--------------------------------------------------->
-#--------------------------------------------------->
+
+
+
+
+
+
+
 #-------------------------------------------------------------------->Pattern matching with regular expressions
 
 #-------------------------------------------------------------------->
