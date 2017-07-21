@@ -212,7 +212,7 @@ paste(my_toppings_and, collapse = ", ")
 # str_c() my_toppings_str with collapse = ", "
 str_c(my_toppings_str, collapse = ", ")
 
-#--------------------------------------------------->DataCamp
+#--------------------------------------------------->String length
 
 library(stringr)
 library(babynames)
@@ -241,13 +241,90 @@ mean(girl_length) - mean(boy_length)
 # Confirm str_length() works with factors
 head(factor(boy_names))
 
+#--------------------------------------------------->Extracting substrings
+
+# Extract first letter from boy_names
+boy_first_letter <- str_sub(boy_names, 1,1)
+
+# Tabulate occurrences of boy_first_letter
+table(boy_first_letter)
+
+# Extract the last letter in boy_names, then tabulate
+boy_last_letter <- str_sub(boy_names, -1,-1)
+table(boy_last_letter)
+
+# Extract the first letter in girl_names, then tabulate
+girl_first_letter <- str_sub(girl_names,1,1)
+table(girl_first_letter)
+
+# Extract the last letter in girl_names, then tabulate
+girl_last_letter <- str_sub(girl_names,-1,-1)
+table(girl_last_letter)
+
+#---------------------------------------------------> Detecting matches
+
+#pre_code
+babynames_2014 <- filter(babynames, year == 2014)
+boy_df <- filter(babynames_2014, sex == "M")
+boy_names <- boy_df$name
+
+# Look for pattern "zz" in boy_names
+contains_zz <- str_detect(boy_names, pattern = fixed("zz"))
+
+# Examine str() of contains_zz
+str(contains_zz)
+
+# How many names contain "zz"?
+sum(contains_zz)
+
+# Which names contain "zz"?
+boy_names[contains_zz]
+
+# Which rows in boy_df have names that contain "zz"?
+boy_df[contains_zz,]
+
+
+#---------------------------------------------------> Subsetting strings based on match
+
+# Find boy_names that contain "zz"
+str_subset(boy_names, pattern = "zz")
+
+# Find girl_names that contain "zz"
+str_subset(girl_names, pattern = "zz")
+
+# Find girl_names that contain "U"
+starts_U <- str_subset(girl_names, pattern = fixed("U"))
+starts_U
+
+# Find girl_names that contain "U" and "z"
+str_subset(starts_U, pattern = "z")
+
+#---------------------------------------------------> Counting matches
+
+# Count occurrences of "a" in girl_names
+number_as <- str_count(girl_names, pattern = fixed("a"))
+
+# Count occurrences of "A" in girl_names
+number_As <- str_count(girl_names, pattern = fixed("A"))
+
+# Histograms of number_as and number_As
+hist(number_as)
+hist(number_As)  
+
+# Find total "a" + "A"
+total_as <- number_as + number_As
+
+# girl_names with more than 4 a's
+girl_names[total_as > 4]
+
+#---------------------------------------------------> Splitting strings
+
+
+
 
 #--------------------------------------------------->
 #--------------------------------------------------->
-#--------------------------------------------------->
+#-------------------------------------------------------------------->Pattern matching with regular expressions
 
-
-
-#-------------------------------------------------------------------->
 #-------------------------------------------------------------------->
 #-------------------------------------------------------------------->
