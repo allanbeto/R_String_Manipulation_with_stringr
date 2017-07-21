@@ -1,9 +1,9 @@
 # String Manipulation in R with stringr
 
 #install package
-
-
-
+install.packages("stringr")
+install.packages("babynames")
+install.packages("dplyr")
 
 
 
@@ -166,12 +166,11 @@ writeLines(rows)
 
 #---------------------------------------------------> A very simple table
 
-toppings <- c("anchovies", "artichoke", "bacon", "breakfast bacon", "Canadian bacon",
-              "cheese"           ,"chicken"          ,"chili peppers",    "feta"             ,"garlic"           ,"green peppers"    ,"grilled onions",  
-               "ground beef"      ,"ham"              ,"hot sauce"        ,"meatballs", 
-              "mushrooms"        ,"olives"           ,"onions"           ,"pepperoni",       
-              "pineapple"        ,"sausage"          ,"spinach"          ,"sun-dried tomato",
-              "tomatoes")
+toppings <- c("anchovies",      "artichoke",      "bacon",            "breakfast bacon",    "Canadian bacon"
+              ,"cheese",        "chicken",        "chili peppers",    "feta",               "garlic"       
+              ,"green peppers", "grilled onions", "ground beef",      "ham",                "hot sauce"         
+              ,"mushrooms",     "olives",         "onions",           "pepperoni",          "pineapple"
+              ,"spinach",       "sun-dried tomato","meatballs",       "sausage",            "tomatoes")
 
 
 # Randomly sample 3 toppings
@@ -192,4 +191,66 @@ my_order <- paste("I want to order a pizza with ", these_toppings, ".", sep = ""
 # Order pizza with writeLines()
 writeLines(my_order)
 
+#--------------------------------------------------------------------> Pattern matching with regular expressions
 
+#--------------------------------------------------->Putting strings together with stringr
+
+library(stringr)
+
+my_toppings <- c("cheese", NA, NA)
+my_toppings_and <- paste(c("", "", "and "), my_toppings, sep = "")
+
+# Print my_toppings_and
+print(my_toppings_and)
+
+# Use str_c() instead of paste(): my_toppings_str
+my_toppings_str <- str_c(c("", "", "and "), my_toppings)
+
+# Print my_toppings_str
+print(my_toppings_str)
+
+# paste() my_toppings_and with collapse = ", "
+paste(my_toppings_and, collapse = ", ")
+
+# str_c() my_toppings_str with collapse = ", "
+str_c(my_toppings_str, collapse = ", ")
+
+#--------------------------------------------------->DataCamp
+
+library(stringr)
+library(babynames)
+library(dplyr)
+
+# Extracting vectors for boys' and girls' names
+babynames_2014 <- filter(babynames, year == 2014)
+boy_names <- filter(babynames_2014, sex == "M")$name
+girl_names <- filter(babynames_2014, sex == "F")$name
+
+# Take a look at a few boy_names
+head(boy_names)
+
+# Find the length of all boy_names
+boy_length <- str_length(boy_names)
+
+# Take a look at a few lengths
+head(boy_length)
+
+# Find the length of all girl_names
+girl_length <- str_length(girl_names)
+
+# Find the difference in mean length
+mean(girl_length) - mean(boy_length)
+
+# Confirm str_length() works with factors
+head(factor(boy_names))
+
+
+#--------------------------------------------------->
+#--------------------------------------------------->
+#--------------------------------------------------->
+
+
+
+#-------------------------------------------------------------------->
+#-------------------------------------------------------------------->
+#-------------------------------------------------------------------->
