@@ -2,11 +2,8 @@
 
 #install package
 install.packages("stringr")
-install.packages("babynames")
 install.packages("dplyr")
-
-
-
+install.packages("babynames")
 #--------------------------------------------------------------------> String basics
 
 #---------------------------------------------------> Quotes
