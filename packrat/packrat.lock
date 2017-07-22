@@ -39,6 +39,11 @@ Source: CRAN
 Version: 0.2
 Hash: 8ab2dbf7ea120cf2d31183e0bf388485
 
+Package: digest
+Source: CRAN
+Version: 0.6.12
+Hash: e53fb8c58673df868183697e39a6a4d6
+
 Package: dplyr
 Source: CRAN
 Version: 0.7.1
@@ -48,6 +53,21 @@ Package: glue
 Source: CRAN
 Version: 1.1.1
 Hash: dfd5a27768175ae51d08dc6beba1ef11
+
+Package: htmltools
+Source: CRAN
+Version: 0.3.6
+Hash: 5b070a04ef8df1953544873db1c5896e
+
+Package: htmlwidgets
+Source: CRAN
+Version: 0.9
+Hash: 7514f6ea9f3bef6d9b6c945095275302
+
+Package: jsonlite
+Source: CRAN
+Version: 1.5
+Hash: 9c51936d8dd00b2f1d4fe9d10499694c
 
 Package: magrittr
 Source: CRAN
@@ -73,6 +93,31 @@ Source: CRAN
 Version: 0.1-1
 Hash: fb19215402e2d9f1c7f803dcaa806fc2
 
+Package: rebus
+Source: CRAN
+Version: 0.1-3
+Hash: 0219fe87da93d9aea111f8381829b843
+
+Package: rebus.base
+Source: CRAN
+Version: 0.0-3
+Hash: 400cdbe545c425591348364a56dd708c
+
+Package: rebus.datetimes
+Source: CRAN
+Version: 0.0-1
+Hash: e0f12528dd69d0e2ec3f674a61dd35e5
+
+Package: rebus.numbers
+Source: CRAN
+Version: 0.0-1
+Hash: d74a0beae93f1f28956105ff578b39d2
+
+Package: rebus.unicode
+Source: CRAN
+Version: 0.0-2
+Hash: ec2d5cef0325d53666cb41f91045c0d4
+
 Package: rlang
 Source: CRAN
 Version: 0.1.1
@@ -92,3 +137,8 @@ Package: tibble
 Source: CRAN
 Version: 1.3.3
 Hash: 6a18f6da2887d2c4c4a6554027161483
+
+Package: yaml
+Source: CRAN
+Version: 2.1.14
+Hash: c81230c3a7d9ba20607ad6b4331173d1

@@ -4,6 +4,17 @@
 install.packages("stringr")
 install.packages("dplyr")
 install.packages("babynames")
+install.packages("rebus")
+install.packages("htmltools")
+install.packages("htmlwidgets")
+
+library(stringr)
+library(dplyr)
+library(babynames)
+library(rebus)
+library(htmltools)
+library(htmlwidgets)
+
 #--------------------------------------------------------------------> String basics
 
 #---------------------------------------------------> Quotes
@@ -364,18 +375,338 @@ word_lengths <- lapply(words, str_count)
 lapply(word_lengths, mean)
 
 
-#--------------------------------------------------->Replacing matches in strings
+#---------------------------------------------------> Replacing matches in strings
+
+ids <- c("ID#: 192", "ID#: 118", "ID#: 001")
+
+# Replace "ID#: " with ""
+id_nums <- str_replace_all(ids, pattern = "ID#: ", replacement = "")
+
+# Turn id_nums into numbers
+id_ints <- as.numeric(id_nums)
+
+# Some (fake) phone numbers
+phone_numbers <- c("510-555-0123", "541-555-0167")
+
+# Use str_replace() to replace "-" with " "
+str_replace(phone_numbers, pattern = "-", replacement  = "" )
+
+# Use str_replace_all() to replace "-" with " "
+str_replace_all(phone_numbers, pattern = "-", replacement = "" )
+replacement = 
+# Turn phone numbers into the format xxx.xxx.xxxx
+str_replace_all(phone_numbers, pattern = "-", replacement = "." )
+
+#---------------------------------------------------> Review
+
+genes <- c("TTAGAGTAAATTAATCCAATCTTTGACCCAAATCTCTGCTGGATCCTCTGGTATTTCATGTTGGATGACGTCAATTTCTAATATTTCACCCAACCGTTGAGCACCTTGTGCGATCAATTGTTGATCCAGTTTTATGATTGCACCGCAGAAAGTGTCATATTCTGAGCTGCCTAAACCAACCGCCCCAAAGCGTACTTGGGATAAATCAGGCTTTTGTTGTTCGATCTGTTCTAATAATGGCTGCAAGTTATCAGGTAGATCCCCGGCACCATGAGTGGATGTCACGATTAACCACAGGCCATTCAGCGTAAGTTCGTCCAACTCTGGGCCATGAAGTATTTCTGTAGAAAACCCAGCTTCTTCTAATTTATCCGCTAAATGTTCAGCAACATATTCAGCACTACCAAGCGTACTGCCACTTATCAACGTTATGTCAGCCAT"
+          ,"TTAAGGAACGATCGTACGCATGATAGGGTTTTGCAGTGATATTAGTGTCTCGGTTGACTGGATCTCATCAATAGTCTGGATTTTGTTGATAAGTACCTGCTGCAATGCATCAATGGATTTACACATCACTTTAATAAATATGCTGTAGTGGCCAGTGGTGTAATAGGCCTCAACCACTTCTTCTAAGCTTTCCAATTTTTTCAAGGCGGAAGGGTAATCTTTGGCACTTTTCAAGATTATGCCAATAAAGCAGCAAACGTCGTAACCCAGTTGTTTTGGGTTAACGTGTACACAAGCTGCGGTAATGATCCCTGCTTGCCGCATCTTTTCTACTCTTACATGAATAGTTCCGGGGCTAACAGCGAGGTTTTTGGCTAATTCAGCATAGGGTGTGCGTGCATTTTCCATTAATGCTTTCAGGATGCTGCGATCGAGATTATCGATCTGATAAATTTCACTCAT"
+          ,"ATGAAAAAACAATTTATCCAAAAACAACAACAAATCAGCTTCGTAAAATCATTCTTTTCCCGCCAATTAGAGCAACAACTTGGCTTGATCGAAGTCCAGGCTCCTATTTTGAGCCGTGTGGGTGATGGAACCCAAGATAACCTTTCTGGTTCTGAGAAAGCGGTACAGGTAAAAGTTAAGTCATTGCCGGATTCAACTTTTGAAGTTGTACATTCATTAGCGAAGTGGAAACGTAAAACCTTAGGGCGTTTTGATTTTGGTGCTGACCAAGGGGTGTATACCCATATGAAAGCATTGCGCCCAGATGAAGATCGCCTGAGTGCTATTCATTCTGTATATGTAGATCAGTGGGATTGGGAACGGGTTATGGGGGACGGTGAACGTAACCTGGCTTACCTGAAATCGACTGTTAACAAGATTTATGCAGCGATTAAAGAAACTGAAGCGGCGATCAGTGCTGAGTTTGGTGTGAAGCCTTTCCTGCCGGATCATATTCAGTTTATCCACAGTGAAAGCCTGCGGGCCAGATTCCCTGATTTAGATGCTAAAGGCCGTGAACGTGCAATTGCCAAAGAGTTAGGTGCTGTCTTCCTTATAGGGATTGGTGGCAAATTGGCAGATGGTCAATCCCATGATGTTCGTGCGCCAGATTATGATGATTGGACCTCTCCGAGTGCGGAAGGTTTCTCTGGATTAAACGGCGACATTATTGTCTGGAACCCAATATTGGAAGATGCCTTTGAGATATCTTCTATGGGAATTCGTGTTGATGCCGAAGCTCTTAAGCGTCAGTTAGCCCTGACTGGCGATGAAGACCGCTTGGAACTGGAATGGCATCAATCACTGTTGCGCGGTGAAATGCCACAAACTATCGGGGGAGGTATTGGTCAGTCCCGCTTAGTGATGTTATTGCTGCAGAAACAACATATTGGTCAGGTGCAATGTGGTGTTTGGGGCCCTGAAATCAGCGAGAAAGTTGATGGCCTGCTGTAA")
+names(genes) <- c("YPO001","asnC" ,"asnA")
+
+
+# Find the number of nucleotides in each sequence
+str_length(genes)
+
+# Find the number of A's occur in each sequence
+str_count(genes, pattern = fixed("A"))
+
+# Return the sequences that contain "TTTTTT"
+str_subset(genes, pattern = fixed("TTTTTT"))
+
+# Replace all the "A"s in the sequences with a "_"
+str_replace_all(genes, pattern = fixed("A"), replacement = "_")
+
+#---------------------------------------------------> Final challenges
+
+# --- Task 1 ----
+# Define some full names
+names <- c("Diana Prince", "Clark Kent")
+
+# Split into first and last names
+names_split <- str_split(names, pattern = " ", simplify =  TRUE, n = 2)
+
+# Extract the first letter in the first name
+abb_first <- str_sub(names_split[,1], 1, 1)
+
+# Combine the first letter ". " and last name
+str_c(abb_first, ". ", names_split[,2])
+
+# --- Task 2 ----
+# Use all names in babynames_2014
+all_names <- babynames_2014$name
+
+# Get the last two letters of all_names
+last_two_letters <- str_sub(all_names, -2, -1)
+
+# Does the name end in "ee"?
+ends_in_ee <- str_detect(last_two_letters, pattern = fixed("ee"))
+
+# Extract rows and "sex" column
+sex <- babynames_2014$sex[ends_in_ee]
+
+# Display result as a table
+table(sex)
+
+#--------------------------------------------------------------------> Pattern matching with regular expressions
+#---------------------------------------------------> Matching the start or end of the string
+
+library(rebus)
+library(stringr)
+library(htmltools)
+library(htmlwidgets)
+
+# Some strings to practice with
+x <- c("cat", "coat", "scotland", "tic toc")
+
+# Print END
+END
+
+# Run me
+str_view(x, pattern = START %R% "c")
+
+# Match the strings that start with "co" 
+str_view(x, pattern = START %R% "co")
+
+# Match the strings that end with "at"
+str_view(x, pattern = "at" %R% END)
+
+# Match the strings that is exactly "cat"
+str_view(x, pattern = START %R% "cat" %R% END)
+
+#---------------------------------------------------> Matching any character
+
+x <- c("cat", "coat", "scotland", "tic toc")
+
+# Match any character followed by a "t"
+str_view(x, pattern = ANY_CHAR %R% "t")
+
+# Match a "t" followed by any character
+str_view(x, pattern = "t" %R% ANY_CHAR)
+
+# Match two characters
+str_view(x, pattern = ANY_CHAR %R% ANY_CHAR)
+
+# Match a string with exactly three characters
+str_view(x, pattern = START %R% ANY_CHAR %R% ANY_CHAR %R% ANY_CHAR %R% END)
+
+#---------------------------------------------------> Combining with stringr functions
+
+# q followed by any character
+pattern <- "q" %R% ANY_CHAR
+
+# Test pattern 
+str_view(c("Quentin", "Kaliq", "Jacques",  "Jacqes"), pattern)  
+
+# Find names that have the pattern
+names_with_q <- str_subset(boy_names, pattern)
+length(names_with_q)
+
+# Find part of name that matches pattern
+part_with_q <- str_extract(boy_names, pattern)
+table(part_with_q)
+
+# Did any names have the pattern more than once?
+count_of_q <- str_count(boy_names, pattern)
+table(count_of_q)
+
+# Which babies got these names?
+with_q <- str_detect(boy_names, pattern)
+
+# What fraction of babies got these names?
+mean(with_q)
+
+#---------------------------------------------------> Alternation 
+
+# Match Jeffrey or Geoffrey
+whole_names <- or("Jeffrey", "Geoffrey")
+str_view(boy_names, pattern = whole_names, 
+         match = TRUE)
+
+# Match Jeffrey or Geoffrey, another way
+common_ending <- or("Je", "Geo") %R% "ffrey"
+str_view(boy_names, pattern = common_ending, 
+         match = TRUE)
+
+# Match with alternate endings
+by_parts <- or("Je", "Geo") %R% "ff" %R% or("ry", "ery", "rey", "erey")
+str_view(boy_names, 
+         pattern = by_parts, 
+         match = TRUE)
+
+# Match names that start with Cath or Kath
+ckath <- START %R% or("Cath", "Kath")
+str_view(girl_names, pattern = ckath, match = TRUE)
+
+#---------------------------------------------------> Character classes
+
+x <- c("grey sky", "gray elephant")
+
+
+# Create character class containing vowels
+vowels <- char_class("Aa","Ee","Ii","Oo","Uu")
+
+# Print vowels
+vowels
+
+# See vowels in x with str_view()
+str_view(x, pattern = vowels)
+
+# See vowels in x with str_view_all()
+str_view_all(x, pattern = vowels)
+
+# Number of vowels in boy_names
+num_vowels <- str_count(boy_names, pattern = vowels)
+mean(num_vowels)
+
+# Proportion of vowels in boy_names
+name_length <- str_length(boy_names)
+mean(num_vowels/name_length)
+#---------------------------------------------------> Repetition
+
+# Vowels from last exercise
+vowels <- char_class("aeiouAEIOU")
+
+# Use `negated_char_class()` for everything but vowels
+not_vowels <- negated_char_class("aeiouAEIOU")
+
+# See names with only vowels
+str_view(boy_names,
+         pattern = exactly(one_or_more(vowels)),
+         match = TRUE)
+
+str_view(boy_names, 
+         pattern = START %R% one_or_more(vowels) %R% END, 
+         match = TRUE)
+
+# See names with no vowels
+str_view(boy_names,
+         pattern = exactly(one_or_more(not_vowels)),
+         match = TRUE)
+
+# See names with no vowels
+str_view(boy_names, 
+         pattern = START %R% one_or_more(not_vowels) %R% END, 
+         match = TRUE)
+
+#---------------------------------------------------> 
+
+contact <- c("Call me at 555-555-0191", "123 Main St", "(555) 555 0191", "Phone: 555.555.0191 Mobile: 555.555.0192")
+
+# Take a look at ALL digits
+str_view_all(contact, pattern = DGT)       ## DGT -----> Pattern 0-9
+
+# Create a three digit pattern and test
+three_digits <- DGT %R% DGT %R% DGT
+str_view_all(contact,
+             pattern = three_digits)
+
+# Create four digit pattern
+four_digits <- three_digits %R% DGT
+
+# Create a separator pattern and test
+separator <- char_class("-.() ")
+str_view_all(contact,
+             pattern = separator)
+
+# Create phone pattern
+phone_pattern <- optional(OPEN_PAREN) %R%
+  three_digits %R%
+  zero_or_more(separator) %R%
+  three_digits %R% 
+  zero_or_more(separator) %R%
+  four_digits
+
+# Test pattern           
+str_view(contact, pattern = phone_pattern)
+
+# Extract phone numbers
+str_extract(contact, pattern = phone_pattern)
+
+# Extract ALL phone numbers
+str_extract_all(contact, pattern = phone_pattern)
 
 
 
 
 
+#---------------------------------------------------> Extracting age and gender from accident narratives
+
+narratives <- c("19YOM-SHOULDER STRAIN-WAS TACKLED WHILE PLAYING FOOTBALL W/ FRIENDS ",                      
+  "31 YOF FELL FROM TOILET HITITNG HEAD SUSTAINING A CHI ",                                    
+  "ANKLE STR. 82 YOM STRAINED ANKLE GETTING OUT OF BED ",                                      
+  "TRIPPED OVER CAT AND LANDED ON HARDWOOD FLOOR. LACERATION ELBOW, LEFT. 33 YOF*",            
+  "10YOM CUT THUMB ON METAL TRASH CAN DX AVULSION OF SKIN OF THUMB ",                          
+  "53 YO F TRIPPED ON CARPET AT HOME. DX HIP CONTUSION ",                                      
+  "13 MOF TRYING TO STAND UP HOLDING ONTO BED FELL AND HIT FOREHEAD ON RADIATOR DX LACERATION",
+  "14YR M PLAYING FOOTBALL; DX KNEE SPRAIN ",                                                  
+  "55YOM RIDER OF A BICYCLE AND FELL OFF SUSTAINED A CONTUSION TO KNEE ",                      
+  "5 YOM ROLLING ON FLOOR DOING A SOMERSAULT AND SUSTAINED A CERVICAL STRA IN")
+
+
+# Look for two digits
+str_view(narratives, pattern = DGT %R% DGT)
+
+# Pattern to match one or two digits
+age <- one_or_more(DGT)
+str_view(narratives, 
+         pattern = age)
+
+# Pattern to match units 
+unit <- optional(SPACE) %R% or("YO", "YR", "MO")
+
+# Test pattern with age then units
+str_view(narratives, 
+         pattern = age %R% unit)
+
+# Pattern to match gender
+gender <- optional(SPACE) %R% or("M", "F")
+
+# Test pattern with age then units then gender
+str_view(narratives, 
+         pattern = age %R% unit %R% gender)
+
+# Extract age_gender, take a look
+age_gender <- str_extract(narratives, age %R% unit %R% gender)
+age_gender
+
+
+#---------------------------------------------------> Extracting age and gender from accident narratives 
+
+# age_gender, age, gender, unit are pre-defined
+# ls.str()
+
+# Extract age and make numeric
+ages_numeric <- as.numeric(str_extract(age_gender, pattern = age))
+
+# Replace age and units with ""
+genders <- str_replace(age_gender, 
+                       pattern = age %R% unit, 
+                       replacement = "")
+
+# Replace extra spaces
+genders_clean <- str_replace_all(genders, 
+                                 pattern = optional(SPACE), 
+                                 replacement = "")
+
+# Extract units 
+time_units <- str_extract(age_gender,
+                          pattern = unit)
+
+# Extract first word character
+time_units_clean <- str_extract(time_units, 
+                                pattern = WRD)
+
+# Turn ages in months to years
+ages_years <- ifelse(time_units_clean == "Y", ages_numeric, ages_numeric/12)
 
 
 
+#-------------------------------------------------------------------->More advanced matching and manipulation
 
+#---------------------------------------------------> 
+#---------------------------------------------------> 
+#---------------------------------------------------> 
+#---------------------------------------------------> 
 
-#-------------------------------------------------------------------->Pattern matching with regular expressions
-
-#-------------------------------------------------------------------->
 #-------------------------------------------------------------------->
