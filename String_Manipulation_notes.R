@@ -1,3 +1,9 @@
+#Files
+
+url  <- "http://s3.amazonaws.com/assets.datacamp.com/production/course_2922/datasets/importance-of-being-earnest.txt"
+download.file(url, "importance-of-being-earnest.txt")
+
+
 # String Manipulation in R with stringr
 
 #install package
@@ -15,6 +21,10 @@ library(babynames)
 library(rebus)
 library(htmltools)
 library(htmlwidgets)
+library(stringi)
+
+
+
 
 #--------------------------------------------------------------------> String basics
 
@@ -400,9 +410,7 @@ str_replace_all(phone_numbers, pattern = "-", replacement = "." )
 
 #---------------------------------------------------> Review
 
-genes <- c("TTAGAGTAAATTAATCCAATCTTTGACCCAAATCTCTGCTGGATCCTCTGGTATTTCATGTTGGATGACGTCAATTTCTAATATTTCACCCAACCGTTGAGCACCTTGTGCGATCAATTGTTGATCCAGTTTTATGATTGCACCGCAGAAAGTGTCATATTCTGAGCTGCCTAAACCAACCGCCCCAAAGCGTACTTGGGATAAATCAGGCTTTTGTTGTTCGATCTGTTCTAATAATGGCTGCAAGTTATCAGGTAGATCCCCGGCACCATGAGTGGATGTCACGATTAACCACAGGCCATTCAGCGTAAGTTCGTCCAACTCTGGGCCATGAAGTATTTCTGTAGAAAACCCAGCTTCTTCTAATTTATCCGCTAAATGTTCAGCAACATATTCAGCACTACCAAGCGTACTGCCACTTATCAACGTTATGTCAGCCAT"
-          ,"TTAAGGAACGATCGTACGCATGATAGGGTTTTGCAGTGATATTAGTGTCTCGGTTGACTGGATCTCATCAATAGTCTGGATTTTGTTGATAAGTACCTGCTGCAATGCATCAATGGATTTACACATCACTTTAATAAATATGCTGTAGTGGCCAGTGGTGTAATAGGCCTCAACCACTTCTTCTAAGCTTTCCAATTTTTTCAAGGCGGAAGGGTAATCTTTGGCACTTTTCAAGATTATGCCAATAAAGCAGCAAACGTCGTAACCCAGTTGTTTTGGGTTAACGTGTACACAAGCTGCGGTAATGATCCCTGCTTGCCGCATCTTTTCTACTCTTACATGAATAGTTCCGGGGCTAACAGCGAGGTTTTTGGCTAATTCAGCATAGGGTGTGCGTGCATTTTCCATTAATGCTTTCAGGATGCTGCGATCGAGATTATCGATCTGATAAATTTCACTCAT"
-          ,"ATGAAAAAACAATTTATCCAAAAACAACAACAAATCAGCTTCGTAAAATCATTCTTTTCCCGCCAATTAGAGCAACAACTTGGCTTGATCGAAGTCCAGGCTCCTATTTTGAGCCGTGTGGGTGATGGAACCCAAGATAACCTTTCTGGTTCTGAGAAAGCGGTACAGGTAAAAGTTAAGTCATTGCCGGATTCAACTTTTGAAGTTGTACATTCATTAGCGAAGTGGAAACGTAAAACCTTAGGGCGTTTTGATTTTGGTGCTGACCAAGGGGTGTATACCCATATGAAAGCATTGCGCCCAGATGAAGATCGCCTGAGTGCTATTCATTCTGTATATGTAGATCAGTGGGATTGGGAACGGGTTATGGGGGACGGTGAACGTAACCTGGCTTACCTGAAATCGACTGTTAACAAGATTTATGCAGCGATTAAAGAAACTGAAGCGGCGATCAGTGCTGAGTTTGGTGTGAAGCCTTTCCTGCCGGATCATATTCAGTTTATCCACAGTGAAAGCCTGCGGGCCAGATTCCCTGATTTAGATGCTAAAGGCCGTGAACGTGCAATTGCCAAAGAGTTAGGTGCTGTCTTCCTTATAGGGATTGGTGGCAAATTGGCAGATGGTCAATCCCATGATGTTCGTGCGCCAGATTATGATGATTGGACCTCTCCGAGTGCGGAAGGTTTCTCTGGATTAAACGGCGACATTATTGTCTGGAACCCAATATTGGAAGATGCCTTTGAGATATCTTCTATGGGAATTCGTGTTGATGCCGAAGCTCTTAAGCGTCAGTTAGCCCTGACTGGCGATGAAGACCGCTTGGAACTGGAATGGCATCAATCACTGTTGCGCGGTGAAATGCCACAAACTATCGGGGGAGGTATTGGTCAGTCCCGCTTAGTGATGTTATTGCTGCAGAAACAACATATTGGTCAGGTGCAATGTGGTGTTTGGGGCCCTGAAATCAGCGAGAAAGTTGATGGCCTGCTGTAA")
+genes <- readRDS("dna.rds") 
 names(genes) <- c("YPO001","asnC" ,"asnA")
 
 
@@ -633,17 +641,7 @@ str_extract_all(contact, pattern = phone_pattern)
 
 #---------------------------------------------------> Extracting age and gender from accident narratives
 
-narratives <- c("19YOM-SHOULDER STRAIN-WAS TACKLED WHILE PLAYING FOOTBALL W/ FRIENDS ",                      
-  "31 YOF FELL FROM TOILET HITITNG HEAD SUSTAINING A CHI ",                                    
-  "ANKLE STR. 82 YOM STRAINED ANKLE GETTING OUT OF BED ",                                      
-  "TRIPPED OVER CAT AND LANDED ON HARDWOOD FLOOR. LACERATION ELBOW, LEFT. 33 YOF*",            
-  "10YOM CUT THUMB ON METAL TRASH CAN DX AVULSION OF SKIN OF THUMB ",                          
-  "53 YO F TRIPPED ON CARPET AT HOME. DX HIP CONTUSION ",                                      
-  "13 MOF TRYING TO STAND UP HOLDING ONTO BED FELL AND HIT FOREHEAD ON RADIATOR DX LACERATION",
-  "14YR M PLAYING FOOTBALL; DX KNEE SPRAIN ",                                                  
-  "55YOM RIDER OF A BICYCLE AND FELL OFF SUSTAINED A CONTUSION TO KNEE ",                      
-  "5 YOM ROLLING ON FLOOR DOING A SOMERSAULT AND SUSTAINED A CERVICAL STRA IN")
-
+narratives <- readRDS("narratives.rds")
 
 # Look for two digits
 str_view(narratives, pattern = DGT %R% DGT)
@@ -810,7 +808,7 @@ str_view(boy_names,
          pattern = six_letter_palindrome, 
          match = TRUE)
 
-#--------------------------------------------------------------------> Replacing with regular expressions
+#---------------------------------------------------> Replacing with regular expressions
 
 # View text containing phone numbers
 contact
@@ -825,16 +823,9 @@ str_replace_all(contact, pattern = DGT, replacement = "X")
 str_replace_all(contact, pattern = DGT, 
                 replacement = c("X", ".", "*", "_") )
 
-#--------------------------------------------------------------------> Replacing with backreferences
+#---------------------------------------------------> Replacing with backreferences
 
-adverbs <- c("ABNORMALLY"       ,"ABSENTMINDEDLY",   "ACCIDENTALLY"    ,
-"ACIDLY"          , "ACTUALLY"      ,   "ADVENTUROUSLY"  , 
-"AFTERWARDS"     ,  "ALMOST"        ,   "ALWAYS"        ,  
-"ANGRILY"       ,   "ANNUALLY"       ,  "ANXIOUSLY"    ,   
-"ARROGANTLY"   ,    "AWKWARDLY"       , "BADLY"      ,     
-"BASHFULLY"   ,     "BEAUTIFULLY"      ,"BITTERLY"    ,    
-"BLEAKLY"    ,      "BLINDLY"          ,"BLISSFULLY",      
-"BOASTFULLY",       "BOLDLY"           ,"BRAVELY") 
+adverbs <- readRDS("adverbs.rds")
 
 
 #Build pattern to match words ending in "ING"
@@ -851,7 +842,7 @@ adverbs_10 <- sample(adverbs, 10)
 str_replace(narratives, capture(pattern),  str_c(adverbs_10, REF1, sep = " "))
 
 
-#--------------------------------------------------------------------> Matching a specific code point or code groups
+#---------------------------------------------------> Matching a specific code point or code groups
 
 library("stringi")
 
@@ -872,10 +863,7 @@ tay_son_separate
 str_view_all(tay_son_separate, UP_DIACRITIC)
 
 
-
-
-
-#-------------------------------------------------------------------->
+#---------------------------------------------------> Matching a single grapheme
 
 # tay_son_separate has been pre-defined
 tay_son_separate
@@ -893,6 +881,158 @@ tay_son_builtin <- stri_trans_nfc(tay_son_separate)
 str_view_all(tay_son_builtin, GRAPHEME)
 
 
-#-------------------------------------------------------------------->
+#-------------------------------------------------------------------->Case studies
+library(stringi)
+library(stringr)
+
+# Read play in using stri_read_lines()
+earnest <- stri_read_lines("importance-of-being-earnest.txt")
+
+# Detect start and end lines
+start <- which(str_detect(earnest, pattern = "START OF THE PROJECT"))
+end   <- which(str_detect(earnest, pattern = "END OF THE PROJECT"))
+
+# Get rid of gutenberg intro text
+earnest_sub  <- earnest[(start + 1):(end - 1)]
+
+# Detect first act
+lines_start <- which(str_detect(earnest_sub, pattern = "FIRST ACT"))
+
+# Set up index
+intro_line_index <- 1:(lines_start - 1)
+
+# Split play into intro and play
+intro_text <- earnest_sub[intro_line_index]
+play_text <-  earnest_sub[-intro_line_index]
+
+# Take a look at the first 20 lines
+writeLines(play_text)
+
+#---------------------------------------------------> Identifying the lines, take 1
+
+# Get rid of empty strings
+empty <- stri_isempty(play_text)
+play_lines <- play_text[!empty]
+
+
+# Pattern for start word then .
+pattern_1 <- START %R% one_or_more(WRD) %R% DOT
+
+# Test pattern_1
+str_view(play_lines, pattern = pattern_1, 
+         match = TRUE) 
+str_view(play_lines, pattern = pattern_1, 
+         match = FALSE)
+
+# Pattern for start, capital, word then .
+pattern_2 <- START %R% ascii_upper() %R% one_or_more(WRD) %R% DOT
+
+# View matches of pattern_2
+str_view(play_lines, pattern = pattern_2, 
+         match = TRUE) 
+
+# View non-matches of pattern_2
+str_view(play_lines, pattern = pattern_2, 
+         match = FALSE) 
+
+
+# Get subset of lines that match
+lines <- str_subset(play_lines, pattern = pattern_2)
+
+# Extract match from lines
+who <- str_extract(lines, pattern = pattern_2)
+
+# Let's see what we have
+unique(who)
+
+#---------------------------------------------------> Identifying the lines, take 2
+
+# Create vector of characters
+characters <- c("Algernon", "Jack", "Lane", "Cecily", "Gwendolen", "Chasuble", 
+                "Merriman", "Lady Bracknell", "Miss Prism")
+
+# Match start, then character name, then .
+pattern_3 <- START %R% or1(characters) %R% DOT
+
+# View matches of pattern_3
+str_view(play_lines, pattern = pattern_3, match = TRUE)
+
+# View non-matches of pattern_3
+str_view(play_lines, pattern = pattern_3, match = FALSE)
+
+# Pull out matches
+lines <- str_subset(play_lines, pattern = pattern_3)
+
+# Extract match from lines
+who <- str_extract(lines, pattern = pattern_3)
+
+# Let's see what we have
+unique(who)
+
+# Count lines per character
+table(who)
+
+#---------------------------------------------------> Changing case to ease matching
+
+catcidents <- readRDS("catcidents.rds")
+
+# catcidents has been pre-defined
+head(catcidents)
+
+# Construct pattern of DOG in boundaries
+whole_dog_pattern <- whole_word("DOG")
+
+# View matches to word "DOG"
+str_view(catcidents, pattern = whole_dog_pattern, match = TRUE)
+
+# Transform catcidents to upper case
+catcidents_upper <- str_to_upper(catcidents) 
+
+# View matches to word "DOG" again
+str_view(catcidents_upper, pattern = whole_dog_pattern, match = TRUE)
+
+# Which strings match?
+has_dog <- which(str_detect(catcidents_upper, pattern = whole_dog_pattern))
+
+# Pull out matching strings in original 
+catcidents[has_dog]
+
+#---------------------------------------------------> Ignoring case when matching
+
+# View matches to "TRIP"
+str_view(catcidents, pattern = "TRIP", match = TRUE)
+
+# Construct case insensitive pattern
+trip_pattern <- regex("TRIP", ignore_case = TRUE)  #CHECK__ why the function ignore the arg ignore_Case 
+
+# View case insensitive matches to "TRIP"
+str_view(catcidents, pattern = trip_pattern, match = TRUE)
+
+# Get subset of matches
+trip <- str_subset(catcidents, pattern = trip_pattern)
+
+# Extract matches
+str_extract(trip, pattern = trip_pattern)
+
+
+#---------------------------------------------------> Fixing case problems
+
+library(stringi)
+
+# Get first five catcidents
+cat5 <- catcidents[1:5]
+
+# Take a look at original
+writeLines(cat5)
+
+# Transform to title case
+writeLines(str_to_title(cat5))
+
+# Transform to title case with stringi
+stri_trans_totitle(cat5)
+
+# Transform to sentence case with stringi
+writeLines(stri_trans_totitle(cat5, type = "sentence"))
+
 
 
